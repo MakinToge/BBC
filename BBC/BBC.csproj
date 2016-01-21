@@ -49,6 +49,15 @@
       <HintPath>..\packages\Constellation.Common.1.7.5.15187\lib\net45\Constellation.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Emgu.CV">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\emgucv\bin\Emgu.CV.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.UI">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\emgucv\bin\Emgu.CV.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.Util">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\emgucv\bin\Emgu.Util.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
       <Private>True</Private>
