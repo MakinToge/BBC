@@ -25,6 +25,12 @@ namespace BBCv2
         public Form1()
         {
             InitializeComponent();
+
+            cap = new Capture();
+
+            timer1.Tick+=timer1_Tick;
+
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -35,9 +41,15 @@ namespace BBCv2
 
             this.Text = string.Format("IsRunning: {0} - IsConnected: {1} - IsStandAlone: {2}", PackageHost.IsRunning, PackageHost.IsConnected, PackageHost.IsStandAlone);
             PackageHost.WriteInfo("I'm running !");
+        }
 
-            cap = new Capture();
+        private void button1_Click(object sender, EventArgs e)
+        {
+            timer1.Start();
+        }
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
             imageBox1.Image = cap.QueryFrame();
 
             cascadeClassifier = new CascadeClassifier(Application.StartupPath + "/haarcascade_frontalface_default.xml");
@@ -46,16 +58,19 @@ namespace BBCv2
                 if (imageFrame != null)
                 {
                     var grayframe = imageFrame.Convert<Gray, byte>();
-                    var faces = cascadeClassifier.DetectMultiScale(grayframe, 1.1, 10, Size.Empty); //the actual face detection happens here
+                    var faces = cascadeClassifier.DetectMultiScale(grayframe, 1.2, 10, Size.Empty); //the actual face detection happens here
                     foreach (var face in faces)
                     {
                         imageFrame.Draw(face, new Bgr(Color.BurlyWood), 3); //the detected face(s) is highlighted here using a box that is drawn around it/them
-
                     }
                 }
                 imageBox1.Image = imageFrame;
             }
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            timer1.Stop();
         }
     }
 }
