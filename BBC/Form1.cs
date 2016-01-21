@@ -33,16 +33,8 @@ namespace BBC
             PackageHost.WriteInfo("I'm running !");
 
             webcam = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            foreach (FilterInfo VideoCaptureDevice in webcam)
-            {
-                comboBox1.Items.Add(VideoCaptureDevice.Name);
-            }
-            comboBox1.SelectedIndex = 0;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            cam = new VideoCaptureDevice(webcam[comboBox1.SelectedIndex].MonikerString);
+            
+            cam = new VideoCaptureDevice(webcam[0].MonikerString);
             cam.NewFrame += cam_NewFrame;
             cam.Start();
         }
@@ -52,15 +44,5 @@ namespace BBC
             Bitmap pic = (Bitmap)eventArgs.Frame.Clone();
             pictureBox1.Image = pic;
         }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (cam.IsRunning)
-            {
-                cam.Stop();
-            }
-        }
-
-        
     }
 }
