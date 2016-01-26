@@ -89,6 +89,7 @@ namespace BBCv2
             var faceToSave = new Image<Gray, byte>(imageBox1.Image.Bitmap);
             Byte[] file;
             IDBAccess dataStore = new DBAccess("facesDB.db");
+            /*
             var frmSaveDialog = new FrmSaveDialog();
             if (frmSaveDialog.ShowDialog() == DialogResult.OK)
             {
@@ -108,7 +109,7 @@ namespace BBCv2
                     MessageBox.Show(result, "Save Result", MessageBoxButtons.OK);
                 }
 
-            }
+            }*/
         }
     }
 }
