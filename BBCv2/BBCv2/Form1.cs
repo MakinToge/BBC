@@ -13,6 +13,7 @@ using Emgu.CV;
 using Emgu.Util;
 using Emgu.CV.UI;
 using Emgu.CV.Structure;
+using System.Data.SQLite;
 
 namespace BBCv2
 {
@@ -59,9 +60,19 @@ namespace BBCv2
                 {
                     var grayframe = imageFrame.Convert<Gray, byte>();
                     var faces = cascadeClassifier.DetectMultiScale(grayframe, 1.2, 10, Size.Empty); //the actual face detection happens here
+
+                    PackageHost.PushStateObject<Rectangle[]>("faces", faces);
+
                     foreach (var face in faces)
                     {
+                        
+                        
                         imageFrame.Draw(face, new Bgr(Color.BurlyWood), 3); //the detected face(s) is highlighted here using a box that is drawn around it/them
+
+                    }
+                    if (faces.GetLength(0) > 0)
+                    {
+                        imageFrame.Draw(faces[0], new Bgr(Color.Red), 3);
                     }
                 }
                 imageBox1.Image = imageFrame;
@@ -71,6 +82,33 @@ namespace BBCv2
         private void button2_Click(object sender, EventArgs e)
         {
             timer1.Stop();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var faceToSave = new Image<Gray, byte>(imageBox1.Image.Bitmap);
+            Byte[] file;
+            IDBAccess dataStore = new DBAccess("facesDB.db");
+            var frmSaveDialog = new FrmSaveDialog();
+            if (frmSaveDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (frmSaveDialog._identificationNumber.Trim() != String.Empty)
+                {
+                    var username = frmSaveDialog._identificationNumber.Trim().ToLower();
+                    var filePath = Application.StartupPath + String.Format("/{0}.bmp", username);
+                    faceToSave.ToBitmap().Save(filePath);
+                    using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                    {
+                        using (var reader = new BinaryReader(stream))
+                        {
+                            file = reader.ReadBytes((int)stream.Length);
+                        }
+                    }
+                    var result = dataStore.SaveFace(username, file);
+                    MessageBox.Show(result, "Save Result", MessageBoxButtons.OK);
+                }
+
+            }
         }
     }
 }
