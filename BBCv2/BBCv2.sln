@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBCv2", "BBCv2\BBCv2.csproj", "{DBD4F337-E745-4149-B112-1E12F1DC2372}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBCpkg", "BBCpkg\BBCpkg.csproj", "{35169BEB-E482-421C-901E-F0D8EDBA2646}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBCbrain", "BBCbrain\BBCbrain.csproj", "{1853BB36-C233-47A6-BEE7-307F0089EC7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{DBD4F337-E745-4149-B112-1E12F1DC2372}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBD4F337-E745-4149-B112-1E12F1DC2372}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBD4F337-E745-4149-B112-1E12F1DC2372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35169BEB-E482-421C-901E-F0D8EDBA2646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35169BEB-E482-421C-901E-F0D8EDBA2646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35169BEB-E482-421C-901E-F0D8EDBA2646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35169BEB-E482-421C-901E-F0D8EDBA2646}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1853BB36-C233-47A6-BEE7-307F0089EC7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1853BB36-C233-47A6-BEE7-307F0089EC7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1853BB36-C233-47A6-BEE7-307F0089EC7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1853BB36-C233-47A6-BEE7-307F0089EC7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
