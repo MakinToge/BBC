@@ -8,7 +8,6 @@
          EnableControlHub="false">
   <Compatibility constellationVersion="1.7" dotNetTargetPlatform="net45" />
   <Settings>
-    <Setting name="RefreshRate" type="decimal"/>
 	<!-- My package settings --> 
   </Settings>
 </Package>

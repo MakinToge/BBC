@@ -37,16 +37,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Emgu.CV">
-      <HintPath>..\..\..\..\..\..\..\Emgu\emgucv-windows-universal 3.0.0.2157\bin\Emgu.CV.dll</HintPath>
+      <HintPath>..\BBCpkg\Emgu.CV.dll</HintPath>
     </Reference>
     <Reference Include="Emgu.CV.Contrib">
       <HintPath>..\BBCpkg\Emgu.CV.Contrib.dll</HintPath>
     </Reference>
     <Reference Include="Emgu.CV.UI">
-      <HintPath>..\..\..\..\..\..\..\Emgu\emgucv-windows-universal 3.0.0.2157\bin\Emgu.CV.UI.dll</HintPath>
+      <HintPath>..\BBCpkg\Emgu.CV.UI.dll</HintPath>
     </Reference>
     <Reference Include="Emgu.Util">
-      <HintPath>..\..\..\..\..\..\..\Emgu\emgucv-windows-universal 3.0.0.2157\bin\Emgu.Util.dll</HintPath>
+      <HintPath>..\BBCpkg\Emgu.Util.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>

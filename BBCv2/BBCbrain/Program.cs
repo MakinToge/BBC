@@ -46,7 +46,7 @@ namespace BBCbrain
                     new
                     {
                         Title = "Warning",
-                        Message = "Unknown face "
+                        Message = "BBC report an unknown face "
                     }
                     );
             }

@@ -23,12 +23,15 @@ namespace BBCv2
 
         private Capture cap;
         private CascadeClassifier cascadeClassifier;
+        private RecognizerEngine recoEngine;
 
         public Form1()
         {
             InitializeComponent();
 
             cap = new Capture();
+
+            recoEngine = new RecognizerEngine(Application.StartupPath + "/facesDB.db", Application.StartupPath + "/RecognizerEngineData.YAML");
 
             timer1.Tick += timer1_Tick;
 
@@ -53,6 +56,7 @@ namespace BBCv2
         private void timer1_Tick(object sender, EventArgs e)
         {
             imageBox1.Image = cap.QueryFrame();
+            IDBAccess dataStore = new DBAccess("facesDB.db");
 
             cascadeClassifier = new CascadeClassifier(Application.StartupPath + "/haarcascade_frontalface_default.xml");
             using (var imageFrame = cap.QueryFrame().ToImage<Bgr, Byte>())
@@ -63,18 +67,21 @@ namespace BBCv2
                     var faces = cascadeClassifier.DetectMultiScale(grayframe, 1.2, 10, Size.Empty); //the actual face detection happens here
 
                     PackageHost.PushStateObject<Rectangle[]>("faces", faces);
-
+                    string txt = "";
                     foreach (var face in faces)
                     {
 
-
+                        
                         imageFrame.Draw(face, new Bgr(Color.BurlyWood), 3); //the detected face(s) is highlighted here using a box that is drawn around it/them
 
+                        txt += dataStore.GetUsername(recoEngine.RecognizeUser(imageFrame.GetSubRect(face).Convert<Gray, byte>()))+ " ";
+                        
                     }
                     if (faces.GetLength(0) > 0)
                     {
                         imageFrame.Draw(faces[0], new Bgr(Color.Red), 3);
                     }
+                    textBox1.Text = txt;
                 }
                 imageBox1.Image = imageFrame;
             }
@@ -89,6 +96,7 @@ namespace BBCv2
         {
             //var faceToSave = new Image<Gray, Byte>(imageBox1.Image.Bitmap);
             var faceToSave = cap.QueryFrame();
+            timer1.Stop();
             Byte[] file;
             IDBAccess dataStore = new DBAccess("facesDB.db");
 
@@ -111,6 +119,15 @@ namespace BBCv2
                     MessageBox.Show(result, "Save Result", MessageBoxButtons.OK);
                 }
 
+            }
+            timer1.Start();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (recoEngine.TrainRecognizer())
+            {
+                textBox2.Text = "Done";
             }
         }
     }
