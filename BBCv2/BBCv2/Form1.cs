@@ -30,9 +30,9 @@ namespace BBCv2
 
             cap = new Capture();
 
-            timer1.Tick+=timer1_Tick;
+            timer1.Tick += timer1_Tick;
 
-            
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -66,8 +66,8 @@ namespace BBCv2
 
                     foreach (var face in faces)
                     {
-                        
-                        
+
+
                         imageFrame.Draw(face, new Bgr(Color.BurlyWood), 3); //the detected face(s) is highlighted here using a box that is drawn around it/them
 
                     }
@@ -87,10 +87,11 @@ namespace BBCv2
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var faceToSave = new Image<Gray, byte>(imageBox1.Image.Bitmap);
+            //var faceToSave = new Image<Gray, Byte>(imageBox1.Image.Bitmap);
+            var faceToSave = cap.QueryFrame();
             Byte[] file;
             IDBAccess dataStore = new DBAccess("facesDB.db");
-            
+
             var frmSaveDialog = new FrmSaveDialog();
             if (frmSaveDialog.ShowDialog() == DialogResult.OK)
             {
@@ -98,7 +99,7 @@ namespace BBCv2
                 {
                     var username = frmSaveDialog._identificationNumber.Trim().ToLower();
                     var filePath = Application.StartupPath + String.Format("/{0}.bmp", username);
-                    faceToSave.ToBitmap().Save(filePath);
+                    faceToSave.Save(filePath);
                     using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                     {
                         using (var reader = new BinaryReader(stream))

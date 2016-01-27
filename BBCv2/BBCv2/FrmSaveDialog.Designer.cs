@@ -58,7 +58,6 @@
             this.Controls.Add(this.textBox1);
             this.Name = "FrmSaveDialog";
             this.Text = "FrmSaveDialog";
-            this.Load += new System.EventHandler(this.FrmSaveDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

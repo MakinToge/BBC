@@ -18,14 +18,11 @@ namespace BBCv2
             InitializeComponent();
         }
 
-        private void FrmSaveDialog_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             _identificationNumber = textBox1.Text;
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }
