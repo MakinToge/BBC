@@ -8,25 +8,26 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Microsoft.SqlServer.Server;
+using Emgu.CV.Face;
 
-namespace Project_FaceRecognition
+namespace BBCv2
 {
     class RecognizerEngine
     {
-        private FaceRecognizer _faceRecognizer;
-        private DataStoreAccess _dataStoreAccess;
-        private String _recognizerFilePath;
+        private EigenFaceRecognizer faceRecognizer;
+        private DBAccess dbAccess;
+        private String recognizerFilePath;
 
         public RecognizerEngine(String databasePath, String recognizerFilePath)
         {
-            _recognizerFilePath = recognizerFilePath;
-            _dataStoreAccess = new DataStoreAccess(databasePath);
-            _faceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
+            this.recognizerFilePath = recognizerFilePath;
+            dbAccess = new DBAccess(databasePath);
+            faceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
         }
 
         public bool TrainRecognizer()
         {
-            var allFaces = _dataStoreAccess.CallFaces("ALL_USERS");
+            var allFaces = dbAccess.CallFaces("ALL_USERS");
             if (allFaces != null)
             {
                 var faceImages = new Image<Gray, byte>[allFaces.Count];
@@ -39,8 +40,8 @@ namespace Project_FaceRecognition
                     faceImages[i] = faceImage.Resize(100,100,Inter.Cubic);
                     faceLabels[i] = allFaces[i].UserId;
                 }
-                _faceRecognizer.Train(faceImages, faceLabels);
-                _faceRecognizer.Save(_recognizerFilePath);
+                faceRecognizer.Train(faceImages, faceLabels);
+                faceRecognizer.Save(recognizerFilePath);
             }
             return true;
            
@@ -48,17 +49,14 @@ namespace Project_FaceRecognition
 
         public void LoadRecognizerData()
         {
-            _faceRecognizer.Load(_recognizerFilePath);
+            faceRecognizer.Load(recognizerFilePath);
         }
 
         public int RecognizeUser(Image<Gray, byte> userImage)
         {
-          /*  Stream stream = new MemoryStream();
-            stream.Write(userImage, 0, userImage.Length);
-            var faceImage = new Image<Gray, byte>(new Bitmap(stream));*/
-            _faceRecognizer.Load(_recognizerFilePath);
+            faceRecognizer.Load(recognizerFilePath);
 
-            var result = _faceRecognizer.Predict(userImage.Resize(100, 100, Inter.Cubic));
+            var result = faceRecognizer.Predict(userImage.Resize(100, 100, Inter.Cubic));
             return result.Label;
         }
     }

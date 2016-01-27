@@ -39,6 +39,9 @@
     <Reference Include="Emgu.CV">
       <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\emgucv\bin\Emgu.CV.dll</HintPath>
     </Reference>
+    <Reference Include="Emgu.CV.Contrib">
+      <HintPath>..\BBCpkg\Emgu.CV.Contrib.dll</HintPath>
+    </Reference>
     <Reference Include="Emgu.CV.UI">
       <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\emgucv\bin\Emgu.CV.UI.dll</HintPath>
     </Reference>
