@@ -14,6 +14,7 @@ using Emgu.Util;
 using Emgu.CV.UI;
 using Emgu.CV.Structure;
 using System.Data.SQLite;
+using System.IO;
 
 namespace BBCv2
 {
@@ -37,11 +38,11 @@ namespace BBCv2
         private void Form1_Load(object sender, EventArgs e)
         {
             // Attach the MessageCallbacks on this class & update the PackageDescriptor
-            PackageHost.AttachMessageCallbacks(this);
-            PackageHost.DeclarePackageDescriptor();
+            //PackageHost.AttachMessageCallbacks(this);
+            //PackageHost.DeclarePackageDescriptor();
 
             this.Text = string.Format("IsRunning: {0} - IsConnected: {1} - IsStandAlone: {2}", PackageHost.IsRunning, PackageHost.IsConnected, PackageHost.IsStandAlone);
-            PackageHost.WriteInfo("I'm running !");
+            //PackageHost.WriteInfo("I'm running !");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -89,7 +90,7 @@ namespace BBCv2
             var faceToSave = new Image<Gray, byte>(imageBox1.Image.Bitmap);
             Byte[] file;
             IDBAccess dataStore = new DBAccess("facesDB.db");
-            /*
+            
             var frmSaveDialog = new FrmSaveDialog();
             if (frmSaveDialog.ShowDialog() == DialogResult.OK)
             {
@@ -109,7 +110,7 @@ namespace BBCv2
                     MessageBox.Show(result, "Save Result", MessageBoxButtons.OK);
                 }
 
-            }*/
+            }
         }
     }
 }
