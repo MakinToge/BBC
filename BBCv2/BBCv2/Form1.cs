@@ -13,6 +13,8 @@ using Emgu.CV;
 using Emgu.Util;
 using Emgu.CV.UI;
 using Emgu.CV.Structure;
+using System.Data.SQLite;
+using System.IO;
 
 namespace BBCv2
 {
@@ -21,6 +23,7 @@ namespace BBCv2
 
         private Capture cap;
         private CascadeClassifier cascadeClassifier;
+        private RecognizerEngine recoEngine;
 
         public Form1()
         {
@@ -28,19 +31,21 @@ namespace BBCv2
 
             cap = new Capture();
 
-            timer1.Tick+=timer1_Tick;
+            recoEngine = new RecognizerEngine(Application.StartupPath + "/facesDB.db", Application.StartupPath + "/RecognizerEngineData.YAML");
 
-            
+            timer1.Tick += timer1_Tick;
+
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             // Attach the MessageCallbacks on this class & update the PackageDescriptor
-            PackageHost.AttachMessageCallbacks(this);
-            PackageHost.DeclarePackageDescriptor();
+            //PackageHost.AttachMessageCallbacks(this);
+            //PackageHost.DeclarePackageDescriptor();
 
             this.Text = string.Format("IsRunning: {0} - IsConnected: {1} - IsStandAlone: {2}", PackageHost.IsRunning, PackageHost.IsConnected, PackageHost.IsStandAlone);
-            PackageHost.WriteInfo("I'm running !");
+            //PackageHost.WriteInfo("I'm running !");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -51,6 +56,7 @@ namespace BBCv2
         private void timer1_Tick(object sender, EventArgs e)
         {
             imageBox1.Image = cap.QueryFrame();
+            IDBAccess dataStore = new DBAccess("facesDB.db");
 
             cascadeClassifier = new CascadeClassifier(Application.StartupPath + "/haarcascade_frontalface_default.xml");
             using (var imageFrame = cap.QueryFrame().ToImage<Bgr, Byte>())
@@ -59,10 +65,30 @@ namespace BBCv2
                 {
                     var grayframe = imageFrame.Convert<Gray, byte>();
                     var faces = cascadeClassifier.DetectMultiScale(grayframe, 1.2, 10, Size.Empty); //the actual face detection happens here
+
+                    PackageHost.PushStateObject<Rectangle[]>("faces", faces);
+                    string txt = "";
                     foreach (var face in faces)
                     {
+
+                        
                         imageFrame.Draw(face, new Bgr(Color.BurlyWood), 3); //the detected face(s) is highlighted here using a box that is drawn around it/them
+
+                        if (File.Exists(Application.StartupPath + "/RecognizerEngineData.YAML"))
+                        {
+                            txt += dataStore.GetUsername(recoEngine.RecognizeUser(imageFrame.GetSubRect(face).Convert<Gray, byte>())) + " ";
+                        }
+                        else
+                        {
+                            txt += "Train the recognizer engine first !";
+                        }
+                        
                     }
+                    if (faces.GetLength(0) > 0)
+                    {
+                        imageFrame.Draw(faces[0], new Bgr(Color.Red), 3);
+                    }
+                    textBox1.Text = txt;
                 }
                 imageBox1.Image = imageFrame;
             }
@@ -71,6 +97,45 @@ namespace BBCv2
         private void button2_Click(object sender, EventArgs e)
         {
             timer1.Stop();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //var faceToSave = new Image<Gray, Byte>(imageBox1.Image.Bitmap);
+            var faceToSave = cap.QueryFrame();
+            timer1.Stop();
+            Byte[] file;
+            IDBAccess dataStore = new DBAccess("facesDB.db");
+
+            var frmSaveDialog = new FrmSaveDialog();
+            if (frmSaveDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (frmSaveDialog._identificationNumber.Trim() != String.Empty)
+                {
+                    var username = frmSaveDialog._identificationNumber.Trim().ToLower();
+                    var filePath = Application.StartupPath + String.Format("/{0}.bmp", username);
+                    faceToSave.Save(filePath);
+                    using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                    {
+                        using (var reader = new BinaryReader(stream))
+                        {
+                            file = reader.ReadBytes((int)stream.Length);
+                        }
+                    }
+                    var result = dataStore.SaveFace(username, file);
+                    MessageBox.Show(result, "Save Result", MessageBoxButtons.OK);
+                }
+
+            }
+            timer1.Start();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (recoEngine.TrainRecognizer())
+            {
+                textBox2.Text = "Done";
+            }
         }
     }
 }

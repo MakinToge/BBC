@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Package xmlns="urn:Constellation.Deployment"
+         Name="BBCpkg"
+         Version="1.3"
+         Author="Adrien"
+         URL="http://www.mywebsite.com"
+         Description="BBCpkg Copyright ©  2016"
+         EnableControlHub="false">
+  <Compatibility constellationVersion="1.7" dotNetTargetPlatform="net45" />
+  <Settings>
+	<!-- My package settings --> 
+  </Settings>
+</Package>
