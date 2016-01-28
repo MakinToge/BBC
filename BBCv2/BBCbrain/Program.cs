@@ -38,7 +38,7 @@ namespace BBCbrain
 
         void Face_ValueChanged(object sender, StateObjectChangedEventArgs e)
         {
-            if (((Face)e.NewState.DynamicValue).Label == "Unknown")
+            if (((string)e.NewState.DynamicValue) == "Unknown")
             {
                 PackageHost.WriteWarn("Warning unknown face detected");
 
@@ -52,13 +52,13 @@ namespace BBCbrain
             }
             else
             {
-                PackageHost.WriteInfo("{0} detected", ((Face)e.NewState.DynamicValue).Label);
+                PackageHost.WriteInfo("{0} detected", ((string)e.NewState.DynamicValue));
 
                 PackageHost.CreateScope("PushBullet").Proxy.SendPush(
                     new
                     {
                         Title = "BBC report",
-                        Message = ((Face)e.NewState.DynamicValue) + " detected"
+                        Message = ((string)e.NewState.DynamicValue) + " detected"
                     }
                     );
             }

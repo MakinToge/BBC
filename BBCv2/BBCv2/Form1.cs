@@ -74,7 +74,14 @@ namespace BBCv2
                         
                         imageFrame.Draw(face, new Bgr(Color.BurlyWood), 3); //the detected face(s) is highlighted here using a box that is drawn around it/them
 
-                        txt += dataStore.GetUsername(recoEngine.RecognizeUser(imageFrame.GetSubRect(face).Convert<Gray, byte>()))+ " ";
+                        if (File.Exists(Application.StartupPath + "/RecognizerEngineData.YAML"))
+                        {
+                            txt += dataStore.GetUsername(recoEngine.RecognizeUser(imageFrame.GetSubRect(face).Convert<Gray, byte>())) + " ";
+                        }
+                        else
+                        {
+                            txt += "Train the recognizer engine first !";
+                        }
                         
                     }
                     if (faces.GetLength(0) > 0)

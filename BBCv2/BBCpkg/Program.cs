@@ -1,17 +1,21 @@
 ﻿using Constellation;
 using Constellation.Host;
-using Emgu.CV;
-using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 using System.Threading.Tasks;
-using System.Threading;
-using Emgu.CV.Face;
-using Emgu.CV.CvEnum;
+//using System.Windows.Forms;
+using Emgu.CV;
+using Emgu.Util;
+using Emgu.CV.UI;
+using Emgu.CV.Structure;
+using System.Data.SQLite;
 using System.IO;
+using System.Threading;
 
 namespace BBCpkg
 {
@@ -38,6 +42,8 @@ namespace BBCpkg
                 Path.Combine(Environment.CurrentDirectory, "data/facesDB.db"),
                 Path.Combine(Environment.CurrentDirectory, "data/RecognizerEngineData.YAML"));    //"/data/facesDB.db", startupPath + "/data/RecognizerEngineData.YAML");
             cap = new Capture();
+
+            //cap.QueryFrame().Save(Path.Combine(Environment.CurrentDirectory, "test.bmp"));
 
             Task.Factory.StartNew(() =>
             {
@@ -72,7 +78,7 @@ namespace BBCpkg
 				            }
 			            }
 		            }
-		    	    Thread.Sleep(PackageHost.GetSettingValue<int>("RefreshRate"));
+                    Thread.Sleep(5000);//PackageHost.GetSettingValue<int>("RefreshRate")
 				}
 			});
         }
